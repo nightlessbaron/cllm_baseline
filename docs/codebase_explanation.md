@@ -100,3 +100,39 @@ The aggressiveness of that filtering is controlled by the activation ratio `r`: 
 - `JacobiForcing/jacobi_forcing_inference_MR_humaneval.py` — HumanEval with MR.
 
 **Hyperparameters:** block size `n` (default 64 for inference), block count `K` (default 2), pool size (default 4), activation ratio `r` (default 0.85).
+
+## 3. The model-code layer
+
+Two Qwen2-based model files sit under `modeling/`. They share a common base but differ in their decoding machinery; picking the right one at inference time matters.
+
+- **`modeling/cllm2_qwen2_modeling_kv_terminate_on_eos_improved.py`** — standard KV-cache-aware causal forward pass with early EOS termination. Used by the plain HumanEval / MATH500 inference entry points.
+- **`modeling/cllm2_qwen2_modeling_kv_terminate_on_eos_improved_multiblock_lookahead_unified.py`** — adds the multiblock lookahead plumbing needed by MR inference (parallel in-flight blocks with rejection). Used by `jacobi_forcing_inference_MR_humaneval.py`.
+
+Training loads whichever model file matches the trainer variant selected by the script being run (§2.4).
+
+## 4. Repo map
+
+One-line purpose for each top-level location. Use this as a lookup, not a narrative — see §1 and §2 for the conceptual story.
+
+| Path                        | Purpose                                                                                 |
+| --------------------------- | --------------------------------------------------------------------------------------- |
+| `applications/`             | Demo scripts: chat driver, streaming driver.                                            |
+| `generate_trajectory/`      | Data pipeline: bucketing (stage 0), trajectory rollout (stage 1), noise-window prep (stage 2), tools. |
+| `inference_engine/`         | Lightweight inference engine (FlashAttention, paged KV, CUDA graph, tensor parallel).   |
+| `JacobiForcing/` (nested)   | Training scripts, trainer classes, inference entry points, DeepSpeed configs.           |
+| `modeling/`                 | Qwen2-based model implementations (standard and multiblock-lookahead).                  |
+| `requirements.txt`          | Python dependencies (install under Python 3.12).                                        |
+| `README.md`                 | Upstream overview and quickstart — note: path typos corrected in §5.                    |
+| `LICENSE`                   | Apache 2.0.                                                                             |
+
+## 5. Quirks and gotchas for reproduction
+
+These are the details that bit us (or would have) during reproduction. Each matters because it affects either which command you run, which numbers you compare against, or what you disclose in the methods section of a paper that cites this work as a baseline.
+
+- **Nested `JacobiForcing/JacobiForcing/`.** The repo root `JacobiForcing/` contains a subdirectory *also* named `JacobiForcing/` that houses the training scripts, trainer classes, inference entry points, and DeepSpeed configs. Absolute paths in this doc and in `docs/training_plan.md` use the correct nested form (e.g. `JacobiForcing/JacobiForcing/scripts/train/...`).
+- **README path error.** The upstream README shows `scripts/train/train_jacobi_forcing_coder_n32.sh`. The actual path after clone is `JacobiForcing/scripts/train/train_jacobi_forcing_coder_n32.sh`. Copying the README command verbatim from within the repo root will `No such file`.
+- **Legacy math script name.** The math training script is `train_clean_context_conditioned_cllm_openthinker2_n64.sh`. The `openthinker2` naming is a carryover from an earlier method; this *is* the script to use with `OpenThoughts_Math_training_data_n64w32`. Don't assume unrelated.
+- **Python 3.12 pin.** `requirements.txt` is pinned against Python 3.12. Newer versions (3.13+) are untested; older versions will fail to resolve some deps.
+- **Unpinned HF revisions upstream.** Neither the base Qwen models nor the HF training datasets have pinned revisions in the upstream README. Our reproduction pins both at download time — see Stage 1 and Stage 2 in `docs/training_plan.md`.
+- **flash-attention version drift.** Flash-attention, torch, and transformers version changes can shift training loss at the 4th decimal across otherwise-identical runs. Stage 0's `versions.lock` captures the installed set.
+- **Training-data provenance (disclosable).** The HF training shards were rolled from `JacobiForcing_Coder_7B_v0` — an intermediate checkpoint, not the base Qwen and not the published `_v1`. A paper that uses this as a baseline should disclose that the reproduction re-used the authors' v0-generated trajectories rather than re-rolling from the base model.
