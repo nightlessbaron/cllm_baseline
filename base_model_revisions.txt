@@ -1,2 +1,0 @@
-Qwen/Qwen2.5-Coder-7B-Instruct  c03e6d358207e414f1eca0bb1891e29f1db0e242
-Qwen/Qwen2.5-Math-7B-Instruct   ef9926d75ab1d54532f6a30dd5e760355eb9aa4d

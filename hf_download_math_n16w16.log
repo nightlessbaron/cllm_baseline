@@ -1,23 +1,0 @@
-Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Downloading 'data/train-00002-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/0A7gWEOhlrouyCn0cletbt4Yt6o=.acafa8dc769ef9aa7e2d7581d506d46edf94cd1f6dc330de650fcbdcf2a9a1cb.incomplete'
-Downloading 'data/train-00001-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/0DclQjOu1BOtP91D7kcDqv-bYms=.5fa1b7559ef2df330190588a965cc049b75c1dae50155246f6903af448622233.incomplete'
-Downloading 'data/train-00003-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/kSoc4Zke1B5Qhds5I4p8j3TfJi8=.0b158d26a0db47a2078b89c92f35fa8bbfa5d96511f464750f8658926c0bcb3a.incomplete'
-Downloading 'data/train-00005-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/pTirrEZbX-cQkcnjXy3L_rH1Mq4=.d5c4d91d935a6c9c25641ca07adddc40137bcb3395324184c6510cbdaa0a8b9a.incomplete'
-Downloading 'data/train-00004-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/dLBzKJnr8T5GFVWezmMFGeNrWTk=.0598e117d27c55a0ac0e2eff9d58c827d17e9adf457ccc0c7bba5da8771d53fe.incomplete'
-Downloading 'data/train-00000-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/PTkepxvHLepFhejq6jXfKwysvPA=.a9d91e91dc0b07cc4786edcbba756fa3ebf56881947040f081993db98efd780f.incomplete'
-Downloading 'README.md' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/Xn7B-BWUGOee2Y6hCZtEhtFu4BE=.c8bc8546ee87a23d9059251fee21c782902fd34c.incomplete'
-Downloading '.gitattributes' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/wPaCkH-WbT7GsmxMKKrNZTV4nSM=.1ef325f1b111266a6b26e0196871bd78baa8c2f3.incomplete'
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/README.md
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.gitattributes
-Fetching 9 files:  11%|█         | 1/9 [00:00<00:05,  1.60it/s]Downloading 'data/train-00006-of-00007.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/.cache/huggingface/download/data/i7HLqS4PSN9wiwq6pTpFA9xfQJA=.b6563792328fb18c1e86f99c72bea9d3f12f47f1d9d8ee1f4f65aa4cdd19519d.incomplete'
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00004-of-00007.parquet
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00005-of-00007.parquet
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00003-of-00007.parquet
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00001-of-00007.parquet
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00000-of-00007.parquet
-Fetching 9 files:  33%|███▎      | 3/9 [00:05<00:10,  1.80s/it]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00006-of-00007.parquet
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16/data/train-00002-of-00007.parquet
-Fetching 9 files:  56%|█████▌    | 5/9 [00:05<00:03,  1.02it/s]Fetching 9 files: 100%|██████████| 9/9 [00:05<00:00,  1.64it/s]
-/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n16w16

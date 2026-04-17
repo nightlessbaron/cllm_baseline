@@ -1,22 +1,0 @@
-[33m⚠️  Warning: 'huggingface-cli download' is deprecated. Use 'hf download' instead.[0m
-Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
-Downloading 'merge_rh63l5r4.sqlite-wal' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/hhACDoYykYuNtWE18GN6TOAo2mI=.d88635c65be59201bac2cea557fa6e34ed95f1cc57a2a3d9a78449a01718f932.incomplete'
-Downloading 'merged-traj-data-oct-16-n32w16.jsonl' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/EkorfcfWHm9RTZ4lvLlcmUv5WTQ=.b4e1b7dd96faa4f67ad42a9f46c0d082698a1d689e9600d4a0c401d8bd2cfe61.incomplete'
-Downloading 'merge_bbwwsxg0.sqlite-wal' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/-VXVXQdPpx552Nq62vML670LAAw=.91b5b15f5cba1236efbf3371def49634937943d0fab8ed9e0a8730d864aab230.incomplete'
-Downloading 'merge_rh63l5r4.sqlite-shm' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/EferBkjgYcRQyNVjFdySI25hFNw=.cdef57559917db3f0707789570aa4752dff5674b26c8a9b64cd373a07c316def.incomplete'
-Downloading 'merge_bbwwsxg0.sqlite-shm' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/N9tVWo2razaDbPya8XfKi-R1aoQ=.f8c7dd884bc78d02250d69cd780cc1ae73b00f8c3d703ae1b70cb14c90a484b2.incomplete'
-Downloading 'merged-traj-data-oct-16-n32w32.jsonl' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/P8URVfJj_A-uiNDd4X-0WJBK8lY=.50fa760b24092d84fcba1f4ded1b3ad869cafc1250bf72c04ec3a0e7c538bb13.incomplete'
-Downloading '.gitattributes' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/wPaCkH-WbT7GsmxMKKrNZTV4nSM=.dc2b627aa6f73879662e2f8f2e9465aaf5a9f97c.incomplete'
-Downloading 'README.md' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.cache/huggingface/download/Xn7B-BWUGOee2Y6hCZtEhtFu4BE=.ae84777beecd705dd9a717bf6917ce1cfacd1421.incomplete'
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/.gitattributes
-Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:05,  1.21it/s]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/README.md
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/merge_rh63l5r4.sqlite-shm
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/merge_bbwwsxg0.sqlite-shm
-Fetching 8 files:  38%|███▊      | 3/8 [00:01<00:01,  2.53it/s]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/merge_rh63l5r4.sqlite-wal
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/merge_bbwwsxg0.sqlite-wal
-Fetching 8 files:  50%|█████     | 4/8 [00:01<00:01,  2.34it/s]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/merged-traj-data-oct-16-n32w32.jsonl
-Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16/merged-traj-data-oct-16-n32w16.jsonl
-Fetching 8 files:  88%|████████▊ | 7/8 [00:18<00:03,  3.57s/it]Fetching 8 files: 100%|██████████| 8/8 [00:18<00:00,  2.36s/it]
-/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenCodeInstruct_training_data_n32w16
