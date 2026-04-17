@@ -1,11 +1,33 @@
+# Codex session state (can be file or dir depending on version)
+.codex
 .codex/
-# Large downloaded artifacts (reproducible from revision hashes)
+
+# Upstream code (cloned separately, not committed here — our modifications
+# are captured in appendix_A_*.diff / appendix_A_*.sh / appendix_A_*.py)
+JacobiForcing/
+
+# Large downloaded artifacts (reproducible from revision hashes in dataset_revisions.txt / base_model_revisions.txt / upstream_commit.txt)
 data/OpenCodeInstruct_training_data_n32w16/
+data/OpenCodeInstruct_training_data_n16w16/
 data/OpenThoughts_Math_training_data_n64w32/
+data/OpenThoughts_Math_training_data_n16w16/
 data/coder_smoke_100/
 models/base-coder/
 models/base-math/
-# Per-run training outputs (not part of docs artifacts)
+
+# Per-run training outputs (checkpoints are ~40 GB each — reproduced by running the scripts)
 tmp_smoke/
 runs/
-# Logs (keep top-level ones committed; this ignores per-run logs)
+
+# Install / download logs (large, verbose, regenerable)
+pip_install.log
+flash_attn_rebuild.log
+hf_download_*.log
+
+# Internal planning / brainstorming docs (not part of the public reproduction artifact)
+docs/superpowers/
+
+# Common Python / OS noise
+__pycache__/
+*.pyc
+.DS_Store

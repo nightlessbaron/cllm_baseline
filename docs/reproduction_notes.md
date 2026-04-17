@@ -464,17 +464,52 @@ All diffs archived at `$REPRO_ROOT/appendix_A_*.diff` / `appendix_A_*.sh`.
 
 ---
 
-## 9. What's still in progress
+## 9. Results & progress
 
-- [ ] **Coder Phase 1** — SLURM job 1561965, target 10k steps on `n16w16`. ETA ~6 hours.
-- [ ] **Math Phase 1** — SLURM job 1561986, target 10k steps on `n16w16`. ETA ~6 hours.
-- [ ] **Coder Phase 2** — resume from Phase 1 final ckpt, 10k more steps on `n32w16`.
-- [ ] **Math Phase 2** — resume from Phase 1 final ckpt, 10k more steps on `n64w32`.
+### 9.1 Phase 1 completion (Coder + Math)
+
+Both Phase 1 runs completed cleanly:
+
+| Run | SLURM job | Duration | Final mean loss | Last step loss | Final LR |
+| --- | --- | --- | --- | --- | --- |
+| Coder Phase 1 (n16w16) | 1561965 | 3h 56m (14,158.76 s) | 5.334 | 4.98 | 7.78e-7 |
+| Math Phase 1 (n16w16) | 1562006 | 4h 01m (14,455.75 s) | 5.166 | 5.18 | 7.78e-7 |
+
+Both trained for exactly 10,000 optimizer steps (1 full epoch over 40k samples at bs=4), matching the paper's Phase 1 recipe. Math converges slightly faster than Coder (lower mean loss) thanks to longer sequences and denser supervision per sample.
+
+Final checkpoints (top-level `pytorch_model-0000{1..4}-of-00004.bin` + tokenizer + generation config) are in:
+- `runs/coder-phase1-n16w16/` and `runs/coder-phase1-n16w16/checkpoint-10000/`
+- `runs/math-phase1-n16w16/` and `runs/math-phase1-n16w16/checkpoint-10000/`
+
+Periodic checkpoints from steps 6000, 7000, 8000, 9000 are retained (`save_total_limit=5`); earlier ones were pruned.
+
+**NaN-guard triggers during Math Phase 1:** 0 (non-determinism worked in our favor this run). The dual guard stays in the trainer patch as a safety net — a rerun of the same data could easily hit NaN again.
+
+### 9.2 Dataset length statistics (what we measured)
+
+These numbers informed the Phase 1 subset construction (§6.1–§6.2):
+
+| Dataset | Total rows | Min | Median | p95 | p99 | Max | % > 2048 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Coder 40k_samples (shipped) | 40,000 | 206 | 682 | 1,175 | 1,506 | 4,550 | **0.08%** (32 rows) |
+| Math n16w16 full 250k (parquet) | 250,619 | 76 | 1,091 | 4,369 | 5,584 | 6,822 | **10.44%** (26,162 rows) |
+| Math n16w16 40k (ours, seed=42, filtered) | 40,000 | 98 | — | — | — | 2,048 | 0.00% (enforced) |
+
+Observations:
+- Upstream's Coder `40k_samples_...jsonl` is effectively pre-filtered for paper's max_seq_len=2048.
+- Upstream shipped **no length-filtered Math subset** — we had to build one. Uniform random from the ≤2048 subset at seed=42 preserved bucket distribution (54 distinct buckets, 310–1040 rows per bucket).
+- The Math max of 6,822 tokens (reasoning chains with `\boxed{...}` + LaTeX) is 1.5× Coder's max — Math has a fundamentally longer tail.
+
+### 9.3 Still in progress
+
+- [ ] **Coder Phase 2** — resume from `runs/coder-phase1-n16w16/checkpoint-10000/`, 10k more steps on `n32w16` (paper specifies `n32w8`, unreleased — closest available).
+- [ ] **Math Phase 2** — resume from `runs/math-phase1-n16w16/checkpoint-10000/`, 10k more steps on `n64w32` (only other released Math option).
+- [ ] **Coder Phase 2 / Math Phase 2 data subsets** — both datasets are full parquet/JSONL without shipped 40k-samples files; build our own using the same recipe as §6.2 (filter ≤2048, uniform random 40k at seed=42).
 - [ ] **Eval: Coder HumanEval** — plain + MR (n=64, K=2, pool=4, r=0.85). Compare to paper's 83.5% / 4.0×.
 - [ ] **Eval: Math MATH500** — ditto. Fill paper's reported number at report-time.
 - [ ] **Report: `Stage 7` table fill-in** in `training_plan.md`.
 
-### Out of scope (documented in `training_plan.md` §7):
+### 9.4 Out of scope (documented in `training_plan.md` §7)
 
 - MBPP (Coder) and GSM8K (Math) evals — require `evalchemy` harness, not in this reproduction.
 - Hyperparameter search / ablations — paper's settings are frozen.
