@@ -1,3 +1,62 @@
+diff --git a/JacobiForcing/train/soft_flexattn_cllm_trainer_multiblock.py b/JacobiForcing/train/soft_flexattn_cllm_trainer_multiblock.py
+index 8842cea..eb3c935 100644
+--- a/JacobiForcing/train/soft_flexattn_cllm_trainer_multiblock.py
++++ b/JacobiForcing/train/soft_flexattn_cllm_trainer_multiblock.py
+@@ -553,9 +553,54 @@ class CllmTrainer(Trainer):
+         #del outputs, logits
+         torch.cuda.empty_cache()
+ 
++        # NaN/Inf guard (reproduction note): when training Math from vanilla Qwen2.5-Math-7B-Instruct
++        # in bf16, certain samples occasionally produce non-finite losses OR non-finite gradients
++        # (sharp logit distributions × bf16 precision × noise-conditioned input OOD). Without a
++        # guard, one bad sample either (a) produces NaN loss → NaN gradients after backward, or
++        # (b) produces finite loss but NaN intermediate activations that NaN the gradients during
++        # backward. Either way, the optimizer then applies NaN updates, corrupting all weights.
++        # We guard at BOTH points: pre-backward (catches case a) and post-backward (catches case b).
++
++        # --- Guard A: forward produced a non-finite loss ---
++        if not torch.isfinite(total_loss):
++            if self.args.local_rank == 0:
++                self._nan_skip_count = getattr(self, "_nan_skip_count", 0) + 1
++                wandb.log({
++                    "nan_skip_count": self._nan_skip_count,
++                    "nan_skip_reason": "loss_nonfinite",
++                    "nan_skip_loss_ar_finite": bool(torch.isfinite(loss_ar)),
++                    "nan_skip_loss_consistency_finite": bool(torch.isfinite(loss_consistency)),
++                })
++            for p in model.parameters():
++                if p.grad is not None:
++                    p.grad.zero_()
++            return torch.zeros_like(total_loss).detach()
++
+         with self.accelerator.accumulate(model):
+             self.accelerator.backward(total_loss)
+ 
++        # --- Guard B: backward produced non-finite gradients ---
++        # This is the common failure mode on Math: forward looks fine (e.g., loss ~7.2) but
++        # bf16 overflow in attention-softmax-logsumexp backward creates NaN in one or more
++        # parameter gradients. Check a small sample of parameters for speed.
++        any_nan_grad = False
++        for p in model.parameters():
++            if p.grad is not None and not torch.isfinite(p.grad).all():
++                any_nan_grad = True
++                break
++        if any_nan_grad:
++            if self.args.local_rank == 0:
++                self._nan_skip_count = getattr(self, "_nan_skip_count", 0) + 1
++                wandb.log({
++                    "nan_skip_count": self._nan_skip_count,
++                    "nan_skip_reason": "grad_nonfinite",
++                    "nan_skip_step": self.train_step_cnt,
++                })
++            for p in model.parameters():
++                if p.grad is not None:
++                    p.grad.zero_()
++            # Loss itself was finite, so return the real value for consistency in logging.
++
+         if torch.distributed.is_available() and torch.distributed.is_initialized():
+             torch.distributed.barrier()
+ 
 diff --git a/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py b/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py
 index 6aae09e..855bee5 100644
 --- a/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py
