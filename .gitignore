@@ -1,1 +1,11 @@
 .codex/
+# Large downloaded artifacts (reproducible from revision hashes)
+data/OpenCodeInstruct_training_data_n32w16/
+data/OpenThoughts_Math_training_data_n64w32/
+data/coder_smoke_100/
+models/base-coder/
+models/base-math/
+# Per-run training outputs (not part of docs artifacts)
+tmp_smoke/
+runs/
+# Logs (keep top-level ones committed; this ignores per-run logs)

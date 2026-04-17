@@ -1,0 +1,62 @@
+diff --git a/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py b/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py
+index 6aae09e..855bee5 100644
+--- a/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py
++++ b/JacobiForcing/train/soft_flexattn_train_cllm_multiblock.py
+@@ -155,22 +155,25 @@ def train():
+ 
+     training_args.qlora = model_args.qlora
+ 
+-    training_args.deepspeed = training_args.deepspeed or "scripts/ds_config_cpu_offloading.json"
+-
+-    # Accelerate + DeepSpeed plugin
+-    ds_plugin = DeepSpeedPlugin(hf_ds_config=training_args.deepspeed)  # path or dict
++    # Drop DeepSpeed entirely: on H200 (141 GB each), plain DDP fits Qwen 7B.
++    # Upstream used DS ZeRO-3 (possibly with CPU offload) because their cluster
++    # had less VRAM. Removing DS avoids the "second Accelerator with DS plugin"
++    # incompatibility in accelerate>=1.6 (our pinned 1.8.1). Training math with
++    # plain DDP is mathematically identical to ZeRO-3 no-offload.
++    training_args.deepspeed = None
++
++    # Accelerate (plain DDP — no DS plugin)
+     accelerator = Accelerator(
+         gradient_accumulation_steps=training_args.gradient_accumulation_steps or 1,
+         mixed_precision="bf16" if training_args.bf16 else ("fp16" if training_args.fp16 else "no"),
+         log_with=training_args.report_to if training_args.report_to else None,
+-        deepspeed_plugin=ds_plugin,
+     )
+ 
+     logging.basicConfig(
+         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+         datefmt="%m/%d/%Y %H:%M:%S",
+         handlers=[logging.StreamHandler(sys.stdout)],
+-        level=logging.INFO if accelerator.is_local_main_process else logging.ERROR,  # ### ADDED
++        level=logging.INFO if accelerator.is_local_main_process else logging.ERROR,
+     )
+     if accelerator.is_local_main_process:
+         transformers.utils.logging.set_verbosity_info()
+@@ -194,8 +197,8 @@ def train():
+         )
+     config.use_cache = False
+ 
+-    # partitioned loading for ZeRO-3/offload
+-    dschf = HfDeepSpeedConfig(training_args.deepspeed)
++    # ZeRO-3 partitioned loading sentinel removed; plain DDP path does not need it.
++    # dschf = HfDeepSpeedConfig(training_args.deepspeed)
+ 
+     # Model + Tokenizer
+     attn_impl = "flex_attention"
+@@ -211,9 +214,13 @@ def train():
+         model_args.target_model_path, padding_side="right", use_fast=False
+     )
+ 
+-    # Gradient checkpointing
++    # Gradient checkpointing — enable on the raw model BEFORE DDP-wrapping,
++    # then clear the flag so HF Trainer (called via CllmTrainer.super().__init__)
++    # does not re-enable it on the DDP-wrapped model (which doesn't expose the
++    # .gradient_checkpointing_enable() method and would fail at trainer.py:2331).
+     if getattr(training_args, "gradient_checkpointing", False):
+         model.gradient_checkpointing_enable()
++        training_args.gradient_checkpointing = False
+ 
+     if model_args.qlora:
+         model = prepare_model_for_kbit_training(model)
