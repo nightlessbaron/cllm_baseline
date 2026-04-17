@@ -1,0 +1,34 @@
+[33m⚠️  Warning: 'huggingface-cli download' is deprecated. Use 'hf download' instead.[0m
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/.gitignore.lock (elapsed: 0.2 seconds)
+Downloading 'model-00001-of-00004.safetensors' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/IO4xwqmZYzFmxznkwkiNSBwO1H0=.11f73294487dca1614bd7495e2c4e50372f5794f4cd175ce62d9ec2a8e97873a.incomplete'
+Downloading 'LICENSE' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/DhCjcNQuMpl4FL346qr3tvNUCgY=.6634c8cc3133b3848ec74b9f275acaaa1ea618ab.incomplete'
+Downloading 'README.md' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/Xn7B-BWUGOee2Y6hCZtEhtFu4BE=.6510216ec3a4f5c8396e826e08f5d533445f3a8e.incomplete'
+Downloading 'model-00002-of-00004.safetensors' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/t9msAuTjAZjuQnmzGOwTjiptvIU=.2b992a00b09340ac3f8e54db70509b709e2eef9f601e679682e3a50b496a7b08.incomplete'
+Downloading 'config.json' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/8_PA_wEVGiVa2goH2H4KQOQpvVY=.742831f9f2092415f10d1514414f43568ed424f6.incomplete'
+Downloading '.gitattributes' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/wPaCkH-WbT7GsmxMKKrNZTV4nSM=.a6344aac8c09253b3b630fb776ae94478aa0275b.incomplete'
+Downloading 'merges.txt' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/PtHk0z_I45atnj23IIRhTExwT3w=.20024bfe7c83998e9aeaf98a0cd6a2ce6306c2f0.incomplete'
+Downloading 'generation_config.json' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/3EVKVggOldJcKSsGjSdoUCN1AyQ=.2e57990ab56c363eb20fc8a5363ccdc66f795de3.incomplete'
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/README.md
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/generation_config.json
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/config.json
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/LICENSE
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.gitattributes
+Fetching 14 files:   7%|▋         | 1/14 [00:00<00:11,  1.17it/s]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/merges.txt
+Fetching 14 files:  43%|████▎     | 6/14 [00:01<00:01,  7.35it/s]Downloading 'tokenizer_config.json' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/vzaExXFZNBay89bvlQv-ZcI6BTg=.2c722710e1e87b1affe215eef769b4f8fb2d5316.incomplete'
+Downloading 'tokenizer.json' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/HgM_lKo9sdSCfRtVg7MMFS7EKqo=.443909a61d429dff23010e5bddd28ff530edda00.incomplete'
+Downloading 'model.safetensors.index.json' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/yVzAsSxRSINSz-tQbpx-TLpfkLU=.14d037fdda5a1311dcc0275003a7a370d84114e6.incomplete'
+Downloading 'model-00003-of-00004.safetensors' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/DaGOU-KRMVrY0aYktrsE34tL0Bs=.2460a589b1d606998574e0d84162e94307a15e2eea2aac6f4ea35f0361657660.incomplete'
+Downloading 'model-00004-of-00004.safetensors' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/-dFtyT7kcgbTHt1cy9JKqruJCR4=.9e7925045deba3bb6ac461f1c2e7eabbe2a189549156dff1ec08b6c750a82bc5.incomplete'
+Downloading 'vocab.json' to '/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/.cache/huggingface/download/j3m-Hy6QvBddw8RXA1uSWl1AJ0c=.4783fe10ac3adce15ac8f358ef5462739852c569.incomplete'
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/tokenizer_config.json
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/model.safetensors.index.json
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/vocab.json
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/tokenizer.json
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/model-00002-of-00004.safetensors
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/model-00004-of-00004.safetensors
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/model-00003-of-00004.safetensors
+Fetching 14 files:  43%|████▎     | 6/14 [00:19<00:01,  7.35it/s]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math/model-00001-of-00004.safetensors
+Fetching 14 files:  50%|█████     | 7/14 [00:20<00:28,  4.03s/it]Fetching 14 files: 100%|██████████| 14/14 [00:20<00:00,  1.47s/it]
+/mnt/weka/home/varad.pimpalkhute/diffusion/models/base-math

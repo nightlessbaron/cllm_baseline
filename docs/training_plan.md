@@ -516,6 +516,7 @@ Running ledger. Every edit to any upstream file, every changed flag, every non-d
 | File                                                              | Change                                      | Reason                                          | Commit SHA |
 | ----------------------------------------------------------------- | ------------------------------------------- | ----------------------------------------------- | ---------- |
 | `env.sh` (new file, `$REPRO_ROOT`)                                | Created in place of modifying `~/.bashrc`   | Keeps determinism env vars version-controlled alongside the docs; no pollution of user shell state | (Stage 0) |
+| `pip install -r requirements.txt` invocation                      | Added `--extra-index-url https://download.pytorch.org/whl/cu128` | `torch==2.7.1+cu128` is a PEP 440 local-version wheel hosted only at PyTorch's own index, not on vanilla PyPI / the TUNA mirror. Without this flag, pip resolution fails with `No matching distribution found for torch==2.7.1+cu128`. Upstream's README does not document this index URL requirement. | (Stage 1) |
 | `JacobiForcing/scripts/train/train_jacobi_forcing_coder_n32.sh`   | dataset / base-model / output-dir paths    | point at local `$REPRO_ROOT` paths              | _<fill>_   |
 | `JacobiForcing/scripts/train/train_clean_context_conditioned_cllm_openthinker2_n64.sh` | dataset / base-model / output-dir paths | same, for Math | _<fill>_   |
 | _add rows as you go_ | _<fill>_ | _<fill>_ | _<fill>_ |
