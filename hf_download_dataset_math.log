@@ -1,0 +1,22 @@
+[33m⚠️  Warning: 'huggingface-cli download' is deprecated. Use 'hf download' instead.[0m
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+Still waiting to acquire lock on /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/.gitignore.lock (elapsed: 0.1 seconds)
+Downloading 'data/train-00001-of-00006.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/data/sB605r8Wx2q23EHLXq0mc8geb6s=.ad2d488928e75585ff2b04916bae8cadcc83881508d02512b2d787270430108b.incomplete'
+Downloading 'data/train-00004-of-00006.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/data/COfsA6V9dzZX6g91tp26grODjD0=.103171a6bdf7c86061e0a5c11239f1e117269c57b81f8ea2bae0eee04c0f4d3b.incomplete'
+Downloading 'data/train-00000-of-00006.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/data/jVW0CkCxmaGc6uq_0lMCH_CrlIM=.5e790581e4ea09efc21f868e1d1621502ed1421e461cb65b52e4c1e642874e27.incomplete'
+Downloading 'data/train-00002-of-00006.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/data/CuureGOD4-_puEGdS4IDcUwKrkc=.cd81cb611b63998f1a46625c4acd24fc302bc75cf3418d94fc0cb70fb48aa50e.incomplete'
+Downloading 'data/train-00005-of-00006.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/data/tqMPO3LS7gWcrslv6900P1YTWU8=.d2d3797b3a8ed27fe7df25852383e04ca7900c6027f57f740f36b9d8d960046c.incomplete'
+Downloading 'data/train-00003-of-00006.parquet' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/data/M7Sl-08Y6weXgpWWHUdFrpPCE4w=.eb40703ee2ec29cc9414e56135e4845551ad9d5257cc97cc6014e76566930d01.incomplete'
+Downloading 'README.md' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/Xn7B-BWUGOee2Y6hCZtEhtFu4BE=.87f3c2f209b57db34747b24b91dd7f59c04716be.incomplete'
+Downloading '.gitattributes' to '/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.cache/huggingface/download/wPaCkH-WbT7GsmxMKKrNZTV4nSM=.1ef325f1b111266a6b26e0196871bd78baa8c2f3.incomplete'
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/README.md
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/.gitattributes
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:05,  1.30it/s]Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/data/train-00001-of-00006.parquet
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/data/train-00004-of-00006.parquet
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/data/train-00002-of-00006.parquet
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/data/train-00003-of-00006.parquet
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/data/train-00005-of-00006.parquet
+Download complete. Moving file to /mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32/data/train-00000-of-00006.parquet
+Fetching 8 files:  38%|███▊      | 3/8 [00:03<00:06,  1.28s/it]Fetching 8 files: 100%|██████████| 8/8 [00:03<00:00,  2.17it/s]
+/mnt/weka/home/varad.pimpalkhute/diffusion/data/OpenThoughts_Math_training_data_n64w32
