@@ -15,17 +15,17 @@ Single-node **8× H200** (141 GB HBM3e each). Configuration uses `JacobiForcing/
 
 ## Contents
 
-- [Stage 0 — Environment](#stage-0--environment)
-- [Stage 1 — Source and base models](#stage-1--source-and-base-models)
-- [Stage 2 — Option A data download](#stage-2--option-a-data-download)
-- [Stage 2.5 — Smoke test](#stage-25--smoke-test)
-- [Stage 3 — Coder training (7B, n32w16)](#stage-3--coder-training-7b-n32w16)
-- [Stage 4 — Math training (7B, n64w32)](#stage-4--math-training-7b-n64w32)
-- [Stage 5 — HumanEval on Coder checkpoint](#stage-5--humaneval-on-coder-checkpoint)
-- [Stage 6 — MATH500 on Math checkpoint](#stage-6--math500-on-math-checkpoint)
-- [Stage 7 — Reporting](#stage-7--reporting)
-- [Appendix A — Deviations from upstream recipe](#appendix-a--deviations-from-upstream-recipe)
-- [Appendix B — Failure-mode runbook](#appendix-b--failure-mode-runbook)
+- [Stage 0 — Environment](#stage-0-environment)
+- [Stage 1 — Source and base models](#stage-1-source-and-base-models)
+- [Stage 2 — Option A data download](#stage-2-option-a-data-download)
+- [Stage 2.5 — Smoke test](#stage-25-smoke-test)
+- [Stage 3 — Coder training (7B, n32w16)](#stage-3-coder-training-7b-n32w16)
+- [Stage 4 — Math training (7B, n64w32)](#stage-4-math-training-7b-n64w32)
+- [Stage 5 — HumanEval on Coder checkpoint](#stage-5-humaneval-on-coder-checkpoint)
+- [Stage 6 — MATH500 on Math checkpoint](#stage-6-math500-on-math-checkpoint)
+- [Stage 7 — Reporting](#stage-7-reporting)
+- [Appendix A — Deviations from upstream recipe](#appendix-a-deviations-from-upstream-recipe)
+- [Appendix B — Failure-mode runbook](#appendix-b-failure-mode-runbook)
 
 ## Conventions
 
@@ -310,14 +310,14 @@ Upstream does not publish exact wall-clock; record yours on first run. For 8× H
 ### Expected artifacts
 
 - `$REPRO_ROOT/runs/coder-n32/train.log`
-- `$REPRO_ROOT/runs/coder-n32/checkpoint-<final>/` (final Coder checkpoint)
+- `$REPRO_ROOT/runs/coder-n32/checkpoint-FINAL/` (final Coder checkpoint)
 - `$REPRO_ROOT/appendix_A_coder_script.diff`
 
 ## Stage 4 — Math training (7B, n64w32)
 
 ### Script used
 
-`$REPO/JacobiForcing/scripts/train/train_clean_context_conditioned_cllm_openthinker2_n64.sh` — pairs with `OpenThoughts_Math_training_data_n64w32`. The `openthinker2` in the filename is a legacy naming carryover; this *is* the current math training script. Same DeepSpeed config as Stage 3 (`ds_config.json`).
+`$REPO/JacobiForcing/scripts/train/train_clean_context_conditioned_cllm_openthinker2_n64.sh` — pairs with `OpenThoughts_Math_training_data_n64w32`. The `openthinker2` in the filename is a legacy naming carryover; this *is* the current math training script. Same DeepSpeed config as Stage 3 (`JacobiForcing/scripts/train/ds_config.json`).
 
 ### Required edits — and ONLY these
 
@@ -356,7 +356,7 @@ Same shape as Stage 3: wandb/tensorboard optional, record the run ID, expect mon
 ### Expected artifacts
 
 - `$REPRO_ROOT/runs/math-n64/train.log`
-- `$REPRO_ROOT/runs/math-n64/checkpoint-<final>/` (final Math checkpoint)
+- `$REPRO_ROOT/runs/math-n64/checkpoint-FINAL/` (final Math checkpoint)
 - `$REPRO_ROOT/appendix_A_math_script.diff`
 
 ## Stage 5 — HumanEval on Coder checkpoint
@@ -379,7 +379,7 @@ Same shape as Stage 3: wandb/tensorboard optional, record the run ID, expect mon
 ### Commands
 
 ```bash
-export CODER_CKPT=$REPRO_ROOT/runs/coder-n32/checkpoint-<final>    # replace <final>
+export CODER_CKPT=$REPRO_ROOT/runs/coder-n32/checkpoint-FINAL    # replace FINAL with your final checkpoint step or symlink
 mkdir -p $REPRO_ROOT/eval/humaneval
 
 cd $REPO
@@ -438,7 +438,7 @@ python JacobiForcing/jacobi_forcing_inference_MR_humaneval.py \
 ### Commands
 
 ```bash
-export MATH_CKPT=$REPRO_ROOT/runs/math-n64/checkpoint-<final>    # replace <final>
+export MATH_CKPT=$REPRO_ROOT/runs/math-n64/checkpoint-FINAL    # replace FINAL with your final checkpoint step or symlink
 mkdir -p $REPRO_ROOT/eval/math500
 
 cd $REPO
@@ -525,7 +525,7 @@ Store the raw diffs alongside this table at `$REPRO_ROOT/appendix_A_*.diff`.
 
 | Symptom                                      | Likely cause                                                         | Fix                                                                                      |
 | -------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `torch.cuda.OutOfMemoryError` during training| Unexpected memory — a kernel or activation is larger than budgeted   | Enable gradient checkpointing in the trainer flag (`--gradient_checkpointing`); if still OOM, switch DeepSpeed config to `ds_config_cpu_offloading.json` and record in Appendix A. |
+| `torch.cuda.OutOfMemoryError` during training| Unexpected memory — a kernel or activation is larger than budgeted   | Enable gradient checkpointing in the trainer flag (`--gradient_checkpointing`); if still OOM, switch DeepSpeed config to `JacobiForcing/scripts/train/ds_config_cpu_offloading.json` and record in Appendix A. |
 | NaN loss within first 50 steps               | Flash-attention / torch mismatch; numerically unstable kernel        | Reinstall flash-attn pinned to the version in `versions.lock`. Rerun smoke test.         |
 | Loss diverges after warmup                   | Wrong dataset path (wrong `n/w` shard loaded) or mis-edited LR       | Verify `dataset_revisions.txt` matches the expected commit; `git diff` the script against upstream — any non-path edit is the cause. |
 | DeepSpeed hangs at init, no NCCL traffic     | Interconnect / NCCL init misconfiguration                            | Export `NCCL_DEBUG=INFO`, rerun; check IFNAME and `NCCL_SOCKET_IFNAME`. For single-node, ensure no stale `NCCL_ASYNC_ERROR_HANDLING` override. |

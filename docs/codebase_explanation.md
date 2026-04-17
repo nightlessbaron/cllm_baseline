@@ -12,7 +12,7 @@
 
 ## Scope and conventions
 
-This document is **concept-first**: each method stage is explained before its code pointer. It is *not* a directory reference — see §4 for that. All code paths are relative to the upstream repo root `hao-ai-lab/JacobiForcing` at the commit recorded in `docs/training_plan.md` Stage 1. Paths beginning with `JacobiForcing/` refer to the **nested subdirectory** inside the repo (see §5).
+This document is **concept-first**: each method stage is explained before its code pointer. It is *not* a directory reference — see §4 for that. All code paths are relative to the upstream repo root `hao-ai-lab/JacobiForcing` at the commit recorded in `docs/training_plan.md` Stage 1. Paths beginning with `JacobiForcing/` refer to the repo's nested training-and-inference subdirectory (see §5).
 
 ## 1. What Jacobi Forcing is
 
@@ -78,7 +78,7 @@ The noise schedule is controlled by `min_noisy_ratio` and `max_noisy_ratio`, whi
 
 The trainer turns those prepared noisy-window examples into a finetuned causal model that can clean up future-token guesses. Conceptually, each example contains a prompt prefix plus a noised view of the continuation, and the model is optimized to recover the clean continuation. The loss is still ordinary next-token cross-entropy, but it is applied over the positions corresponding to the noised region rather than treating the entire sequence as a standard left-to-right language-model target. That is the core Jacobi Forcing move: keep the causal architecture and token-level objective, but redefine the training distribution so the model becomes robust to imperfect future blocks.
 
-There are several trainer implementations in the repo, reflecting different experiments and data formats, so the file choice matters. For the released windowed-progressive shards, the primary pairing is `soft_flexattn_cllm_trainer_multiblock_window.py`, called from `soft_flexattn_train_cllm_multiblock_window.py`, with `train_cllm.py` acting as the top-level wrapper that launches the recipe. This is the trainer path whose assumptions line up with the shard format described in §2.3. On the systems side, `ds_config.json` is the normal H200-oriented DeepSpeed configuration and assumes standard multi-GPU training without CPU offload. The repository also includes `ds_config_cpu_offloading.json` as a ZeRO-3 fallback for lower-VRAM environments. That fallback is useful for portability, but it is not part of the intended H200 reproduction path here.
+There are several trainer implementations in the repo, reflecting different experiments and data formats, so the file choice matters. For the released windowed-progressive shards, the primary pairing is `JacobiForcing/train/soft_flexattn_cllm_trainer_multiblock_window.py`, called from `JacobiForcing/train/soft_flexattn_train_cllm_multiblock_window.py`, with `JacobiForcing/train/train_cllm.py` acting as the top-level wrapper that launches the recipe. This is the trainer path whose assumptions line up with the shard format described in §2.3. On the systems side, `JacobiForcing/scripts/train/ds_config.json` is the normal H200-oriented DeepSpeed configuration and assumes standard multi-GPU training without CPU offload. The repository also includes `JacobiForcing/scripts/train/ds_config_cpu_offloading.json` as a ZeRO-3 fallback for lower-VRAM environments. That fallback is useful for portability, but it is not part of the intended H200 reproduction path here.
 
 **Code:**
 - `JacobiForcing/train/soft_flexattn_cllm_trainer_multiblock_window.py` — primary trainer for the windowed-progressive recipe.
@@ -106,7 +106,7 @@ The aggressiveness of that filtering is controlled by the activation ratio `r`: 
 Two Qwen2-based model files sit under `modeling/`. They share a common base but differ in their decoding machinery; picking the right one at inference time matters.
 
 - **`modeling/cllm2_qwen2_modeling_kv_terminate_on_eos_improved.py`** — standard KV-cache-aware causal forward pass with early EOS termination. Used by the plain HumanEval / MATH500 inference entry points.
-- **`modeling/cllm2_qwen2_modeling_kv_terminate_on_eos_improved_multiblock_lookahead_unified.py`** — adds the multiblock lookahead plumbing needed by MR inference (parallel in-flight blocks with rejection). Used by `jacobi_forcing_inference_MR_humaneval.py`.
+- **`modeling/cllm2_qwen2_modeling_kv_terminate_on_eos_improved_multiblock_lookahead_unified.py`** — adds the multiblock lookahead plumbing needed by MR inference (parallel in-flight blocks with rejection). Used by `JacobiForcing/jacobi_forcing_inference_MR_humaneval.py`.
 
 Training loads whichever model file matches the trainer variant selected by the script being run (§2.4).
 
@@ -129,9 +129,9 @@ One-line purpose for each top-level location. Use this as a lookup, not a narrat
 
 These are the details that bit us (or would have) during reproduction. Each matters because it affects either which command you run, which numbers you compare against, or what you disclose in the methods section of a paper that cites this work as a baseline.
 
-- **Nested `JacobiForcing/JacobiForcing/`.** The repo root `JacobiForcing/` contains a subdirectory *also* named `JacobiForcing/` that houses the training scripts, trainer classes, inference entry points, and DeepSpeed configs. Absolute paths in this doc and in `docs/training_plan.md` use the correct nested form (e.g. `JacobiForcing/JacobiForcing/scripts/train/...`).
-- **README path error.** The upstream README shows `scripts/train/train_jacobi_forcing_coder_n32.sh`. The actual path after clone is `JacobiForcing/scripts/train/train_jacobi_forcing_coder_n32.sh`. Copying the README command verbatim from within the repo root will `No such file`.
-- **Legacy math script name.** The math training script is `train_clean_context_conditioned_cllm_openthinker2_n64.sh`. The `openthinker2` naming is a carryover from an earlier method; this *is* the script to use with `OpenThoughts_Math_training_data_n64w32`. Don't assume unrelated.
+- **Nested `JacobiForcing/` subdirectory.** The repo root contains a nested `JacobiForcing/` directory that houses the training scripts, trainer classes, inference entry points, and DeepSpeed configs. Absolute paths in this doc and in `docs/training_plan.md` use that nested form (e.g. `JacobiForcing/scripts/train/...`).
+- **README path error.** The upstream README shows scripts/train/train_jacobi_forcing_coder_n32.sh. The actual path after clone is `JacobiForcing/scripts/train/train_jacobi_forcing_coder_n32.sh`. Copying the README command verbatim from within the repo root will fail with `No such file`.
+- **Legacy math script name.** The math training script is `JacobiForcing/scripts/train/train_clean_context_conditioned_cllm_openthinker2_n64.sh`. The `openthinker2` naming is a carryover from an earlier method; this *is* the script to use with `OpenThoughts_Math_training_data_n64w32`. Don't assume unrelated.
 - **Python 3.12 pin.** `requirements.txt` is pinned against Python 3.12. Newer versions (3.13+) are untested; older versions will fail to resolve some deps.
 - **Unpinned HF revisions upstream.** Neither the base Qwen models nor the HF training datasets have pinned revisions in the upstream README. Our reproduction pins both at download time — see Stage 1 and Stage 2 in `docs/training_plan.md`.
 - **flash-attention version drift.** Flash-attention, torch, and transformers version changes can shift training loss at the 4th decimal across otherwise-identical runs. Stage 0's `versions.lock` captures the installed set.
