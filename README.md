@@ -139,6 +139,8 @@ Phase 2 scripts and eval (HumanEval + MATH500) are TBD — see `docs/reproductio
 
 See `docs/reproduction_notes.md` §9.1 for the Phase 1 completion table.
 
+Wandb Link: https://wandb.ai/mbzuai-llm/cllm2_training/workspace
+
 | Phase | Steps | Wall-clock | Final mean loss | Last-step loss |
 | --- | --- | --- | --- | --- |
 | Coder Phase 1 (n16w16) | 10,000 | 3 h 56 m | 5.334 | 4.98 |
