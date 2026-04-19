@@ -500,7 +500,22 @@ Observations:
 - Upstream shipped **no length-filtered Math subset** — we had to build one. Uniform random from the ≤2048 subset at seed=42 preserved bucket distribution (54 distinct buckets, 310–1040 rows per bucket).
 - The Math max of 6,822 tokens (reasoning chains with `\boxed{...}` + LaTeX) is 1.5× Coder's max — Math has a fundamentally longer tail.
 
-### 9.3 Still in progress
+### 9.3 Low-speedup finding after Phase 1 (LR=1e-6)
+
+After running inference on the Phase 1 checkpoints (both Coder and Math) we measured only **~1.12× tokens-per-forward speedup** over AR baseline — far below the paper's reported 4.0–4.5×. Loss curves descended cleanly (Coder 7.73 → 4.98, Math 6.12 → 5.18) so the model did learn *something*, but not enough to induce substantial Jacobi-iteration convergence at inference.
+
+**Leading hypothesis:** the paper's `LR=1e-6` is calibrated for **continuing** training from an intermediate checkpoint (`progressive_noise_cllm2_mask_1m_steps`) that had already adapted to Jacobi-forcing inputs for ~1M prior steps. That initial point is ~1e-6-appropriate because the weights are already in a well-conditioned basin for the task. Starting from vanilla `Qwen2.5-{Coder,Math}-7B-Instruct` — which has never seen noisy future blocks — the weights need to travel a much larger distance to reach comparable adaptation. At LR=1e-6 × 10k steps × batch=4, the effective parameter displacement is tiny; the model ends up a shallow perturbation of the base Qwen, which barely commits more than one token per Jacobi iteration.
+
+**Diagnostic signal:** the right metric for adaptation depth isn't training loss — it's the downstream **inference speedup / Jacobi acceptance rate**. Training loss went from 7.7 to 5.0 (38% relative drop), but that decrease is dominated by base Qwen learning the Jacobi input *format* (position encoding of noised blocks, EOS handling), not by learning to *converge* on Jacobi iteration. The latter requires more extensive fine-tuning.
+
+**Mitigation:** retry Phase 1 at `LR=1e-5` (10× higher, same step count). Reasoning:
+- Effective parameter update magnitude is LR × step count × gradient. Keeping step count fixed but 10x-ing LR gives ~10x the cumulative displacement, approximating what an additional 10k-step stage at 1e-6 would have contributed.
+- If the paper's two-stage recipe was Stage A (1M steps at some LR) + Stage B (10k steps at 1e-6), a rough single-stage equivalent is Stage B's LR scaled up to approximate the missing Stage A's contribution. 10x is a reasonable first try.
+- Risk: higher LR may cause more bf16 numerical instability (already have dual NaN guard in place) or skip past the optimal basin. Checkpoint at every 1k steps so we can pick the best one by speedup, not loss.
+
+**Reproducibility takeaway for paper baselines in general:** when the upstream recipe uses an unreleased intermediate as the starting checkpoint, trust the *step count* from the paper but treat the *LR* as a free parameter to sweep. Loss curves will look fine even with an under-tuned LR; only downstream task metrics will reveal the problem.
+
+### 9.4 Still in progress
 
 - [ ] **Coder Phase 2** — resume from `runs/coder-phase1-n16w16/checkpoint-10000/`, 10k more steps on `n32w16` (paper specifies `n32w8`, unreleased — closest available).
 - [ ] **Math Phase 2** — resume from `runs/math-phase1-n16w16/checkpoint-10000/`, 10k more steps on `n64w32` (only other released Math option).
@@ -509,7 +524,7 @@ Observations:
 - [ ] **Eval: Math MATH500** — ditto. Fill paper's reported number at report-time.
 - [ ] **Report: `Stage 7` table fill-in** in `training_plan.md`.
 
-### 9.4 Out of scope (documented in `training_plan.md` §7)
+### 9.5 Out of scope (documented in `training_plan.md` §7)
 
 - MBPP (Coder) and GSM8K (Math) evals — require `evalchemy` harness, not in this reproduction.
 - Hyperparameter search / ablations — paper's settings are frozen.
