@@ -24,6 +24,16 @@ pip_install.log
 flash_attn_rebuild.log
 hf_download_*.log
 
+# Provenance plaintext (info duplicated in README.md pinned-hashes table)
+upstream_commit.txt
+base_model_revisions.txt
+dataset_revisions.txt
+nvidia-smi.txt
+
+# Smoke-test artifacts (not part of the public reproduction recipe)
+appendix_A_smoke_script.sh
+appendix_A_coder_smoke_script.diff
+
 # Internal planning / brainstorming docs (not part of the public reproduction artifact)
 docs/superpowers/
 
